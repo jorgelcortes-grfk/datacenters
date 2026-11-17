@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Southeast Asia’s Digital Backbone: Mapping the Regional Data Center Surge | The Business Times</title>
+
+  <!-- Official The Business Times Favicon (matching businesstimes.ceros.site/haze-economics) -->
+  <link rel="icon" href="https://www.businesstimes.com.sg/favicon.ico" />
+  <link rel="shortcut icon" href="https://www.businesstimes.com.sg/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://www.businesstimes.com.sg/favicon.ico" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Libre Caslon Text (Business Times Display Serif) & Public Sans (Business Times Body & Graphics Sans-Serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js for Interactive Global & Regional Data Visualization (with built-in HTML/SVG fallback) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Public Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            serif: ['"Libre Caslon Text"', 'Georgia', 'serif'],
+          },
+          colors: {
+            editorial: {
+              bg: '#FFFFFF',
+              ink: '#1A1A1A',
+              navy: '#0F2942',
+              teal: '#0D9488',
+              tealDark: '#0F766E',
+              border: '#E2E8F0',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Editorial Typography & Base Styling (The Business Times Ceros Interactive Style) */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: #FFFFFF;
+      color: #1A1A1A;
+      font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-editorial-serif {
+      font-family: 'Libre Caslon Text', Georgia, serif;
+    }
+
+    .font-graphics {
+      font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    /* Classic BT Editorial Drop Cap for Opening Paragraph */
+    .bt-dropcap::first-letter {
+      float: left;
+      font-family: 'Libre Caslon Text', Georgia, serif;
+      font-size: 3.5rem;
+      line-height: 0.85;
+      padding-top: 0.2rem;
+      padding-right: 0.65rem;
+      padding-bottom: 0.1rem;
+      font-weight: 700;
+      color: #0F2942;
+    }
+
+    /* Hero Fallback Background Pattern in case external image fails */
+    .hero-fallback-bg {
+      background: linear-gradient(135deg, #091929 0%, #0F2942 45%, #114B5F 100%);
+    }
+
+    /* Subtle Reading Progress Indicator */
+    #reading-progress-bar {
+      transition: width 120ms ease-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-white selection:bg-teal-100 selection:text-teal-900">
+
+  <!-- The Business Times Editorial Interactive Masthead (Ceros Feature Structure) -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 grid grid-cols-3 items-center">
+      
+      <!-- Left: Minimal Interactive Section Tag (No Homepage Link) -->
+      <div class="flex items-center">
+        <span class="text-[11px] font-bold uppercase tracking-[0.16em] text-[#0D9488]">
+          Visual Stories
+        </span>
+      </div>
+
+      <!-- Center: The Business Times Logo (BT_vector_2.jpg with BT_vector_2.png / BT_vector.jpg / Typographic Fallbacks & Homepage Link) -->
+      <div class="flex items-center justify-center">
+        <a
+          href="https://www.businesstimes.com.sg"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center focus:outline-none py-1"
+          aria-label="The Business Times Home"
+        >
+          <img
+            src="BT_vector_2.jpg"
+            alt="THE BUSINESS TIMES"
+            class="h-4 sm:h-5 md:h-6 w-auto object-contain"
+            onerror="if (!this.dataset.step) { this.dataset.step = '1'; this.src = 'BT_vector_2.png'; } else if (this.dataset.step === '1') { this.dataset.step = '2'; this.src = 'BT_vector.jpg'; } else { this.style.display = 'none'; document.getElementById('bt-masthead-fallback').classList.remove('hidden'); }"
+          />
+          <span
+            id="bt-masthead-fallback"
+            class="hidden font-editorial-serif font-bold tracking-[0.07em] uppercase text-[#1A1A1A] text-base sm:text-xl md:text-2xl whitespace-nowrap"
+          >
+            THE BUSINESS TIMES
+          </span>
+        </a>
+      </div>
+
+      <!-- Right: Social Share Controls (X, LinkedIn, Facebook, Copy Link) -->
+      <div class="flex items-center justify-end space-x-1 sm:space-x-1.5">
+        <span class="hidden xl:inline text-[11px] font-semibold uppercase tracking-wider text-slate-400 mr-1.5">
+          Share
+        </span>
+        <button
+          type="button"
+          onclick="shareArticle('x')"
+          class="p-2 rounded-full text-slate-600 hover:text-[#1A1A1A] hover:bg-slate-100 transition-colors cursor-pointer"
+          aria-label="Share on X"
+          title="Share on X"
+        >
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onclick="shareArticle('linkedin')"
+          class="p-2 rounded-full text-slate-600 hover:text-[#0A66C2] hover:bg-slate-100 transition-colors cursor-pointer"
+          aria-label="Share on LinkedIn"
+          title="Share on LinkedIn"
+        >
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M18.5 18.5V13.2A3.26 3.26 0 0 0 15.24 9.94C14.39 9.94 13.4 10.46 12.92 11.24V10.13H10.13V18.5H12.92V13.57C12.92 12.8 13.54 12.17 14.31 12.17A1.4 1.4 0 0 1 15.71 13.57V18.5H18.5M6.88 8.56A1.68 1.68 0 0 0 8.56 6.88C8.56 5.95 7.81 5.19 6.88 5.19A1.69 1.69 0 0 0 5.19 6.88C5.19 7.81 5.95 8.56 6.88 8.56M8.27 18.5V10.13H5.5V18.5H8.27Z" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onclick="shareArticle('facebook')"
+          class="hidden sm:inline-flex p-2 rounded-full text-slate-600 hover:text-[#1877F2] hover:bg-slate-100 transition-colors cursor-pointer"
+          aria-label="Share on Facebook"
+          title="Share on Facebook"
+        >
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onclick="shareArticle('copy')"
+          class="p-2 rounded-full text-slate-600 hover:text-[#0D9488] hover:bg-slate-100 transition-colors cursor-pointer"
+          aria-label="Copy link"
+          title="Copy article link"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Subtle Scroll Progress Line along bottom of Masthead -->
+    <div class="w-full h-[2px] bg-transparent">
+      <div id="reading-progress-bar" class="h-full bg-[#0D9488]" style="width: 0%;"></div>
+    </div>
+
+    <!-- Subtle Copy Confirmation Toast -->
+    <div
+      id="share-toast"
+      class="hidden fixed top-16 right-4 sm:right-8 z-50 bg-[#0F2942] text-white text-xs font-semibold px-3.5 py-2 rounded shadow-md"
+    >
+      Link copied to clipboard
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow bg-white">
+
+    <!-- 1. Full-Bleed Ceros Editorial Hero Banner -->
+    <section class="relative w-full">
+      <div class="relative w-full h-[320px] sm:h-[440px] lg:h-[520px] overflow-hidden hero-fallback-bg">
+        <!-- High-resolution Data Center Server Room Photograph with Fallback -->
+        <img
+          src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=2000&q=80"
+          alt="High-density server racks inside a modern Southeast Asian data center facility"
+          class="w-full h-full object-cover object-center opacity-85 transition-opacity duration-500"
+          onerror="this.style.display='none'; document.getElementById('hero-svg-fallback').classList.remove('hidden');"
+        />
+
+        <!-- Subtle Bottom Editorial Vignette for Smooth Transition into White Article Header -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#091929]/75 via-[#091929]/20 to-transparent pointer-events-none"></div>
+
+        <!-- Inline SVG Server Rack Graphic Fallback (Shown only if image fails to load) -->
+        <div id="hero-svg-fallback" class="hidden absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+          <svg class="w-full h-full max-w-5xl" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="80" y="40" width="140" height="320" rx="8" stroke="#5EEAD4" stroke-width="2" />
+            <rect x="250" y="40" width="140" height="320" rx="8" stroke="#5EEAD4" stroke-width="2" />
+            <rect x="420" y="40" width="140" height="320" rx="8" stroke="#5EEAD4" stroke-width="2" />
+            <rect x="590" y="40" width="140" height="320" rx="8" stroke="#5EEAD4" stroke-width="2" />
+            <line x1="100" y1="80" x2="200" y2="80" stroke="#0D9488" stroke-width="4" />
+            <line x1="100" y1="120" x2="200" y2="120" stroke="#0D9488" stroke-width="4" />
+            <line x1="270" y1="80" x2="370" y2="80" stroke="#0D9488" stroke-width="4" />
+            <line x1="440" y1="80" x2="540" y2="80" stroke="#0D9488" stroke-width="4" />
+            <line x1="610" y1="80" x2="710" y2="80" stroke="#0D9488" stroke-width="4" />
+          </svg>
+        </div>
+
+        <!-- Bottom-Right Photo Credit Caption (Classic BT Ceros Feature Detail) -->
+        <div class="absolute bottom-3 right-4 sm:right-8 text-[10px] sm:text-[11px] uppercase tracking-wider text-white/75 font-medium">
+          Photo: Unsplash / Data Center Infrastructure
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Editorial Headline Block, Standfirst, Byline & Opening Narrative (Ceros Single-Column Flow, Max-Width ~720px) -->
+    <article class="max-w-[720px] mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-10">
+      <header class="mb-8 text-center">
+        <!-- Category / Visual Feature Kicker -->
+        <div class="inline-flex items-center justify-center space-x-2 mb-3.5">
+          <span class="h-px w-6 bg-[#0D9488]"></span>
+          <span class="text-xs font-bold uppercase tracking-[0.18em] text-[#0D9488]">
+            Digital Infrastructure &bull; Visual Feature
+          </span>
+          <span class="h-px w-6 bg-[#0D9488]"></span>
+        </div>
+
+        <!-- Main Display Serif Headline -->
+        <h1 class="font-editorial-serif text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#0F2942] leading-[1.16] tracking-tight mb-5">
+          Southeast Asia’s Digital Backbone: Mapping the Regional Data Center Surge
+        </h1>
+
+        <!-- Editorial Standfirst / Deck -->
+        <p class="text-lg sm:text-[20px] text-slate-700 leading-[1.6] font-normal max-w-[660px] mx-auto">
+          Surging enterprise cloud migration, generative AI compute demand, and expanding subsea fiber networks are rapidly transforming Southeast Asia’s physical digital landscape. Across eight core ASEAN economies, <strong class="font-semibold text-[#0F2942]">588 operational and tracked data center facilities</strong> (599 across all 10 ASEAN states, out of <strong class="font-semibold text-[#0F2942]">13,304 facilities across 185 countries</strong> worldwide—displayed as 13,300 on Data Center Map’s rounded headline counter) now form the critical compute backbone powering the region’s digital economy.
+        </p>
+      </header>
+
+      <!-- Editorial Byline & Jump Links Bar (Matching BT Ceros Feature Metadata Strip) -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm text-slate-500 border-y border-slate-200 py-3.5 mb-10">
+        <div>
+          <span class="uppercase tracking-wider text-[11px] font-semibold text-slate-400 mr-1.5">By</span>
+          <span class="font-semibold text-[#0F2942]">Claire Tan</span>
+          <span class="mx-1.5 text-slate-400">&amp;</span>
+          <span class="font-semibold text-[#0F2942]">Marcus Lim</span>
+        </div>
+        <div class="flex items-center space-x-4 text-[11px] font-bold uppercase tracking-wider">
+          <a href="#asean-map-section" class="text-[#0D9488] hover:text-[#0F2942] transition-colors">
+            Regional Map &darr;
+          </a>
+          <span class="text-slate-300">|</span>
+          <a href="#global-comparison-section" class="text-[#0D9488] hover:text-[#0F2942] transition-colors">
+            Global Benchmark &darr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Single-Column Narrative Story Flow (With Classic Editorial Drop Cap) -->
+      <div class="space-y-6 text-slate-700 text-base sm:text-[17.5px] leading-[1.82]">
+        <p class="bt-dropcap">
+          At the forefront of Southeast Asia’s compute footprint, <strong class="text-[#0F2942] font-semibold">Indonesia leads the regional dataset with 212 data centers</strong> (36.1% of the eight-country total), propelled by massive domestic digital consumption, fintech adoption, and data residency mandates across Jakarta and Batam. Immediately behind, <strong class="text-[#0F2942] font-semibold">Malaysia ranks second with 135 facilities</strong>, rapidly capturing hyperscale spillover from Singapore into Johor and Cyberjaya thanks to available industrial land, power capacity, and renewable energy initiatives. Meanwhile, <strong class="text-[#0F2942] font-semibold">Thailand accounts for 71 data centers</strong> as a vital mainland cloud gateway, while <strong class="text-[#0F2942] font-semibold">Singapore’s 65 facilities</strong> operate as the region’s ultra-dense interconnection core where global subsea cables and low-latency financial networks converge despite tight land and power constraints.
+        </p>
+
+        <p>
+          Beyond the top four hubs, a fast-growing second tier is expanding digital capacity across both mainland and archipelagic Southeast Asia to serve youthful populations and rising domestic cloud adoption. <strong class="text-[#0F2942] font-semibold">Vietnam hosts 48 data centers</strong> concentrated around Ho Chi Minh City and Hanoi, bolstered by new subsea cable landings, telecom expansions, and data localization rules, while the <strong class="text-[#0F2942] font-semibold">Philippines follows closely with 45 facilities</strong> anchored in Metro Manila to support business process outsourcing and enterprise cloud demand. Further inland, greenfield investments are establishing early terrestrial fiber and edge-colocation footprints in <strong class="text-[#0F2942] font-semibold">Cambodia (10 facilities)</strong> and <strong class="text-[#0F2942] font-semibold">Laos (2 facilities)</strong> across the Greater Mekong Subregion.
+        </p>
+      </div>
+    </article>
+
+    <!-- 3. Embedded Flourish Interactive Bubble Map Section (Wide Editorial Break-Out) -->
+    <section id="asean-map-section" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-16 bg-white">
+      <div class="border-t-2 border-[#0F2942] pt-6">
+        <!-- Section Header -->
+        <div class="mb-6">
+          <span class="text-xs font-bold uppercase tracking-widest text-[#0D9488] block mb-1.5">
+            Interactive Proportional Bubble Map
+          </span>
+          <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#0F2942]">
+            Data Center Distribution Across 8 ASEAN Nations
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600 mt-1">
+            Interactive visualization powered by Flourish showing total data center counts across Southeast Asia (588 facilities across 8 core markets).
+          </p>
+        </div>
+
+        <!-- Responsive Flourish Embed Container -->
+        <div class="w-full bg-white rounded-lg overflow-hidden">
+          <div class="flourish-embed flourish-map" data-src="visualisation/30928875">
+            <script src="https://public.flourish.studio/resources/embed.js"></script>
+            <noscript>
+              <img src="https://public.flourish.studio/visualisation/30928875/thumbnail" width="100%" alt="Southeast Asia Data Center Bubble Map visualization" />
+            </noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Continuation Narrative Story Paragraphs (1-Column, Open Pure White Canvas, Max-Width ~720px) -->
+    <article class="max-w-[720px] mx-auto px-4 sm:px-6 pt-2 pb-14 bg-white">
+      <!-- Editorial Section Subheading -->
+      <h2 class="font-editorial-serif text-2xl sm:text-[28px] font-bold text-[#0F2942] leading-snug mb-6">
+        How Southeast Asia Stacks Up on the Global Compute Map
+      </h2>
+
+      <div class="space-y-6 text-slate-700 text-base sm:text-[17.5px] leading-[1.82]">
+        <p>
+          Zooming out from the ASEAN peninsula and archipelago to the full global dataset of <strong class="text-[#0F2942] font-semibold">13,304 tracked data centers across 185 countries</strong> (rounded to 13,300 on Data Center Map’s site summary) reveals both the scale of Southeast Asia’s progress and the headroom still ahead. When including Myanmar’s 7 facilities and Brunei’s 4 alongside the eight core mapped markets, <strong class="text-[#0F2942] font-semibold">Southeast Asia accounts for 599 data centers—or 4.50% of global infrastructure</strong>. While North America (5,592 facilities, led overwhelmingly by the United States with 5,144) and Europe (3,972 facilities) still hold more than seven-tenths of legacy worldwide capacity, Southeast Asia as a unified bloc now rivals major single-country industrial powerhouses such as the <strong class="text-[#0F2942] font-semibold">United Kingdom (603)</strong> and <strong class="text-[#0F2942] font-semibold">Germany (583)</strong>, and outpaces <strong class="text-[#0F2942] font-semibold">China (465)</strong>, <strong class="text-[#0F2942] font-semibold">India (360)</strong>, and <strong class="text-[#0F2942] font-semibold">Japan (269)</strong> in tracked facility count.
+        </p>
+
+        <!-- Editorial Callout Pull-Quote (Ceros Longform Accent) -->
+        <blockquote class="my-8 pl-5 sm:pl-6 border-l-4 border-[#0D9488] py-1">
+          <p class="font-editorial-serif italic text-xl sm:text-2xl text-[#0F2942] leading-relaxed">
+            “Aggregated as a single regional bloc, Southeast Asia’s 599 data centers now rival the United Kingdom and surpass Germany, China, and India in tracked facility count.”
+          </p>
+        </blockquote>
+
+        <p>
+          This global catch-up is being propelled by structural shifts in how hyperscale cloud and generative AI campuses are sited. As traditional Tier-1 global hubs in Northern Virginia, Frankfurt, London, and central Singapore contend with power-grid congestion, land scarcity, and strict moratoriums, international operators are routing multi-hundred-megawatt investments into Southeast Asian growth corridors—most visibly across <strong class="text-[#0F2942] font-semibold">Malaysia’s Johor state</strong>, <strong class="text-[#0F2942] font-semibold">Indonesia’s Batam island</strong>, and <strong class="text-[#0F2942] font-semibold">Thailand’s Eastern Economic Corridor</strong>. Backed by a young digital-native population of nearly 700 million people, sovereign AI initiatives, and expanding trans-Pacific subsea cable routes, Southeast Asia is steadily transitioning from a regional edge market into a primary pillar of global compute capacity.
+        </p>
+      </div>
+    </article>
+
+    <!-- 5. Interactive Regional Data Analysis: Southeast Asia vs. Rest of World -->
+    <section id="global-comparison-section" class="font-graphics max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 bg-white">
+      <div class="border-t-2 border-[#0F2942] pt-8">
+        <!-- Section Header -->
+        <div class="mb-8">
+          <span class="text-xs font-bold uppercase tracking-widest text-[#0D9488] block mb-1.5">
+            Regional Data Analysis
+          </span>
+          <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#0F2942] tracking-tight">
+            Southeast Asia vs. Rest of the World
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600 mt-1.5 max-w-3xl">
+            Benchmarking Southeast Asia’s 599 facilities against the exact global sum of 13,304 data centers across 185 countries (rounded to 13,300 on Data Center Map’s site counter).
+          </p>
+        </div>
+
+        <!-- Borderless Editorial KPI Strip (Separated only by subtle vertical hairlines) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-y-6 pb-8 mb-8 border-b border-slate-200">
+          <div class="pr-4">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Global Tracked Facilities</div>
+            <div class="font-graphics text-2xl sm:text-3xl font-bold text-[#0F2942] mt-1">13,304</div>
+            <div class="text-xs text-slate-500 mt-1">185 countries (13,300 rounded headline)</div>
+          </div>
+
+          <div class="lg:border-l lg:border-slate-200 lg:pl-6 pr-4">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-[#16A34A]">Southeast Asia (All 10 ASEAN)</div>
+            <div class="font-graphics text-2xl sm:text-3xl font-bold text-[#16A34A] mt-1">599</div>
+            <div class="text-xs text-slate-500 mt-1">588 in 8 mapped nations + MM (7) &amp; BN (4)</div>
+          </div>
+
+          <div class="lg:border-l lg:border-slate-200 lg:pl-6 pr-4">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">ASEAN Share of Global Total</div>
+            <div class="font-graphics text-2xl sm:text-3xl font-bold text-[#0F2942] mt-1">4.50%</div>
+            <div class="text-xs text-slate-500 mt-1">21.98% of all Asia-Pacific capacity</div>
+          </div>
+
+          <div class="lg:border-l lg:border-slate-200 lg:pl-6">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Scale Benchmark</div>
+            <div class="font-graphics text-2xl sm:text-3xl font-bold text-[#0F2942] mt-1">~1.0x UK</div>
+            <div class="text-xs text-slate-500 mt-1">Matches UK (603) &amp; ahead of Germany (583)</div>
+          </div>
+        </div>
+
+        <!-- Interactive Global Share Proportional Ribbon -->
+        <div class="mb-10">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#0F2942]">
+              Share of All 13,304 Global Data Centers by Region
+            </span>
+            <span id="ribbon-hover-readout" class="text-xs font-medium text-slate-600">
+              Hover or click any segment to inspect regional share
+            </span>
+          </div>
+
+          <!-- Stacked Horizontal Ribbon Bar -->
+          <div id="global-share-ribbon" class="w-full h-9 flex rounded-md overflow-hidden bg-slate-100">
+            <!-- Segments injected via JS -->
+          </div>
+
+          <!-- Interactive Region Legend Pills -->
+          <div id="global-ribbon-legend" class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-xs">
+            <!-- Legend items injected via JS -->
+          </div>
+        </div>
+
+        <!-- Interactive Chart View Switcher Tabs & Controls -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-6 border-b border-slate-200">
+          <div class="flex flex-wrap items-center gap-2" role="tablist" aria-label="Regional Data Analysis Views">
+            <button
+              type="button"
+              data-chart-view="regions"
+              class="chart-tab-btn px-3.5 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors cursor-pointer bg-[#1E3A8A] text-white"
+            >
+              1. World Regions Comparison
+            </button>
+            <button
+              type="button"
+              data-chart-view="nations"
+              class="chart-tab-btn px-3.5 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200"
+            >
+              2. ASEAN vs. Top Global Nations
+            </button>
+            <button
+              type="button"
+              data-chart-view="asean10"
+              class="chart-tab-btn px-3.5 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200"
+            >
+              3. All 10 ASEAN Markets (599)
+            </button>
+          </div>
+
+          <!-- Contextual Toggle for View 2 (Exclude USA Scale Outlier) -->
+          <div id="exclude-usa-control" class="hidden items-center space-x-2">
+            <label class="inline-flex items-center space-x-2 text-xs font-semibold text-slate-700 cursor-pointer select-none">
+              <input
+                id="exclude-usa-checkbox"
+                type="checkbox"
+                checked
+                class="w-4 h-4 accent-[#16A34A] rounded cursor-pointer"
+              />
+              <span>Hide USA (5,144) to inspect peer scale</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Chart Caption & Dynamic Context Note -->
+        <div class="mb-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+          <h3 id="chart-dynamic-title" class="font-graphics text-lg sm:text-xl font-bold text-[#0F2942]">
+            Global Data Center Distribution by World Region (Total: 13,304)
+          </h3>
+          <span id="chart-dynamic-subtitle" class="text-xs text-slate-500">
+            Southeast Asia highlighted in green (#16A34A)
+          </span>
+        </div>
+
+        <!-- Borderless Responsive Chart.js Canvas Wrapper + Guaranteed HTML Fallback -->
+        <div id="chart-container-wrapper" class="relative w-full min-h-[420px] sm:min-h-[480px] bg-white">
+          <canvas id="globalComparisonChart" class="w-full h-[420px] sm:h-[480px]"></canvas>
+          <div id="chart-html-fallback" class="hidden space-y-3 py-2"></div>
+        </div>
+
+        <!-- Analytical Takeaway Footnote -->
+        <div id="chart-analytical-note" class="mt-6 pt-4 border-t border-slate-100 text-xs sm:text-sm text-slate-600 leading-relaxed">
+          <strong class="text-[#0F2942]">Key Takeaway:</strong> While North America (42.03%) and Europe (29.86%) account for 71.89% of global data centers, Southeast Asia’s 599 facilities (4.50% global share) represent 21.98% of all Asia-Pacific capacity (2,725 facilities combined) and outnumber Latin America &amp; the Caribbean (583) as well as the Middle East &amp; Africa (432).
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Editorial Source, Credits & BT Footer (Matching BT Ceros Feature Colophon) -->
+  <footer class="bg-slate-50 border-t border-slate-200 py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 text-xs text-slate-500">
+      <!-- Top Row: BT Wordmark & Back to Top -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+        <a
+          href="https://www.businesstimes.com.sg"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center space-x-3"
+          aria-label="The Business Times"
+        >
+          <img
+            src="BT_vector_2.jpg"
+            alt="THE BUSINESS TIMES"
+            class="h-4 sm:h-5 w-auto object-contain"
+            onerror="if (!this.dataset.step) { this.dataset.step = '1'; this.src = 'BT_vector_2.png'; } else if (this.dataset.step === '1') { this.dataset.step = '2'; this.src = 'BT_vector.jpg'; } else { this.style.display = 'none'; document.getElementById('bt-footer-fallback').classList.remove('hidden'); }"
+          />
+          <span
+            id="bt-footer-fallback"
+            class="hidden font-editorial-serif font-bold tracking-[0.07em] uppercase text-[#1A1A1A] text-base"
+          >
+            THE BUSINESS TIMES
+          </span>
+        </a>
+
+        <button
+          type="button"
+          onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+          class="self-start sm:self-auto inline-flex items-center space-x-1.5 text-[11px] font-bold uppercase tracking-widest text-[#0F2942] hover:text-[#0D9488] transition-colors cursor-pointer"
+        >
+          <span>Back to Top</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Credits & Data Source -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <strong class="text-[#0F2942]">Credits:</strong> Claire Tan, Marcus Lim &amp; Rachel Koh
+        </div>
+        <div>
+          <strong>Source:</strong> Data Center Map (<a href="https://www.datacentermap.com/datacenters/" target="_blank" rel="noopener noreferrer" class="underline hover:text-[#0D9488]">datacentermap.com</a>)
+        </div>
+      </div>
+
+      <!-- Methodology Note -->
+      <p class="leading-relaxed text-slate-500">
+        <strong>Methodology Note:</strong> Counts reflect tracked commercial colocation, cloud, and major hyperscale facilities across 185 countries (exact sum of listed country rows: <strong>13,304</strong>; displayed as a rounded <strong>13,300</strong> headline counter on Data Center Map). Private enterprise and government-owned server rooms are generally excluded.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Regional Data Analysis & Editorial Interaction Script -->
+  <script>
+    // Header Share Controls (Supports X, LinkedIn, Facebook & iframe-safe Clipboard Copy)
+    function shareArticle(platform) {
+      const pageUrl = encodeURIComponent(window.location.href);
+      const pageTitle = encodeURIComponent(document.title);
+
+      if (platform === 'x') {
+        window.open(`https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`, '_blank', 'noopener,noreferrer');
+      } else if (platform === 'linkedin') {
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`, '_blank', 'noopener,noreferrer');
+      } else if (platform === 'facebook') {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`, '_blank', 'noopener,noreferrer');
+      } else if (platform === 'copy') {
+        const tempInput = document.createElement('input');
+        tempInput.value = window.location.href;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+          document.execCommand('copy');
+        } catch (e) {}
+        document.body.removeChild(tempInput);
+
+        const toast = document.getElementById('share-toast');
+        if (toast) {
+          toast.classList.remove('hidden');
+          setTimeout(() => toast.classList.add('hidden'), 2400);
+        }
+      }
+    }
+
+    // Subtle Masthead Scroll Progress Bar
+    window.addEventListener('scroll', function () {
+      const progressBar = document.getElementById('reading-progress-bar');
+      if (!progressBar) return;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+      progressBar.style.width = `${pct}%`;
+    }, { passive: true });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Exact Global Total (Sum of all 185 countries on Data Center Map = 13,304; rounded display = 13,300)
+      const GLOBAL_TOTAL = 13304;
+
+      // 1. World Regions Comparison Dataset (Grey & Blue editorial tones + Green highlight for Southeast Asia)
+      const worldRegionsData = [
+        {
+          label: 'North America',
+          count: 5592,
+          color: '#1E3A8A',
+          isSEA: false,
+          note: 'USA (5,144), Canada (300), Mexico (71) & Central America/Caribbean'
+        },
+        {
+          label: 'Europe',
+          count: 3972,
+          color: '#3B82F6',
+          isSEA: false,
+          note: 'UK (603), Germany (583), France (402), Italy (273), Spain (265), Netherlands (200), Russia (191)'
+        },
+        {
+          label: 'Rest of Asia-Pacific (excl. ASEAN)',
+          count: 2126,
+          color: '#93C5FD',
+          isSEA: false,
+          note: 'China (465), India (360), Australia (343), Japan (269), South Korea (117), Hong Kong (82)'
+        },
+        {
+          label: 'Southeast Asia (All 10 ASEAN)',
+          count: 599,
+          color: '#16A34A',
+          isSEA: true,
+          note: 'Indonesia (212), Malaysia (135), Thailand (71), Singapore (65), Vietnam (48), Philippines (45), Cambodia (10), Myanmar (7), Brunei (4), Laos (2)'
+        },
+        {
+          label: 'Latin America & Caribbean',
+          count: 583,
+          color: '#94A3B8',
+          isSEA: false,
+          note: 'Brazil (225), Chile (67), Argentina (48), Colombia (39), Peru (14), Uruguay (10)'
+        },
+        {
+          label: 'Middle East & Africa',
+          count: 432,
+          color: '#CBD5E1',
+          isSEA: false,
+          note: 'Turkey (87), South Africa (68), Israel (66), UAE (62), Saudi Arabia (61), Nigeria (33)'
+        }
+      ];
+
+      // Shared Regional Color Map (Matches Share of Global Data Centers ribbon)
+      const regionColorMap = {
+        'North America': '#1E3A8A',
+        'Europe': '#3B82F6',
+        'Rest of Asia-Pacific': '#93C5FD',
+        'Southeast Asia': '#16A34A',
+        'Latin America & Caribbean': '#94A3B8'
+      };
+
+      // 2. Top Global Nations vs. Southeast Asia Bloc & Top ASEAN Markets
+      const globalNationsBenchmark = [
+        { label: 'United States', count: 5144, region: 'North America', isSEA: false, isUS: true },
+        { label: 'United Kingdom', count: 603, region: 'Europe', isSEA: false },
+        { label: 'Southeast Asia (All 10 ASEAN)', count: 599, region: 'Southeast Asia', isSEA: true, isBloc: true },
+        { label: 'Germany', count: 583, region: 'Europe', isSEA: false },
+        { label: 'China', count: 465, region: 'Rest of Asia-Pacific', isSEA: false },
+        { label: 'France', count: 402, region: 'Europe', isSEA: false },
+        { label: 'India', count: 360, region: 'Rest of Asia-Pacific', isSEA: false },
+        { label: 'Australia', count: 343, region: 'Rest of Asia-Pacific', isSEA: false },
+        { label: 'Canada', count: 300, region: 'North America', isSEA: false },
+        { label: 'Italy', count: 273, region: 'Europe', isSEA: false },
+        { label: 'Japan', count: 269, region: 'Rest of Asia-Pacific', isSEA: false },
+        { label: 'Spain', count: 265, region: 'Europe', isSEA: false },
+        { label: 'Brazil', count: 225, region: 'Latin America & Caribbean', isSEA: false },
+        { label: 'Indonesia (ASEAN #1)', count: 212, region: 'Southeast Asia', isSEA: true },
+        { label: 'The Netherlands', count: 200, region: 'Europe', isSEA: false },
+        { label: 'Russia', count: 191, region: 'Europe', isSEA: false },
+        { label: 'Finland', count: 148, region: 'Europe', isSEA: false },
+        { label: 'Malaysia (ASEAN #2)', count: 135, region: 'Southeast Asia', isSEA: true },
+        { label: 'Ireland', count: 135, region: 'Europe', isSEA: false },
+        { label: 'Thailand (ASEAN #3)', count: 71, region: 'Southeast Asia', isSEA: true },
+        { label: 'Singapore (ASEAN #4)', count: 65, region: 'Southeast Asia', isSEA: true }
+      ];
+
+      // 3. All 10 ASEAN Member States Breakdown (Uniform Green #16A34A)
+      const asean10Data = [
+        { label: 'Indonesia', count: 212, role: 'Primary Domestic & Batam Hyperscale Hub' },
+        { label: 'Malaysia', count: 135, role: 'Johor & Cyberjaya Spillover Corridor' },
+        { label: 'Thailand', count: 71, role: 'Mainland Cloud & EEC Industrial Gateway' },
+        { label: 'Singapore', count: 65, role: 'Subsea Cable & Low-Latency Financial Core' },
+        { label: 'Vietnam', count: 48, role: 'Fast-Growing Ho Chi Minh & Hanoi Hub' },
+        { label: 'Philippines', count: 45, role: 'Metro Manila BPO & Enterprise Cloud Hub' },
+        { label: 'Cambodia', count: 10, role: 'Emerging Greater Mekong Edge Market' },
+        { label: 'Myanmar (Unmapped)', count: 7, role: 'Frontier Telecom & Edge Colocation' },
+        { label: 'Brunei (Unmapped)', count: 4, role: 'Borneo Regional Connectivity Node' },
+        { label: 'Laos', count: 2, role: 'Inland Mekong Terrestrial Fiber Transit' }
+      ];
+
+      // Render Proportional Global Share Ribbon & Interactive Legend
+      const ribbonContainer = document.getElementById('global-share-ribbon');
+      const legendContainer = document.getElementById('global-ribbon-legend');
+      const readoutEl = document.getElementById('ribbon-hover-readout');
+
+      if (ribbonContainer && legendContainer) {
+        worldRegionsData.forEach((region) => {
+          const pct = ((region.count / GLOBAL_TOTAL) * 100).toFixed(2);
+
+          // Stacked bar segment
+          const seg = document.createElement('div');
+          seg.style.width = `${pct}%`;
+          seg.style.backgroundColor = region.color;
+          seg.className = 'h-full transition-opacity duration-200 cursor-pointer hover:opacity-85 relative flex items-center justify-center';
+          seg.title = `${region.label}: ${region.count.toLocaleString()} (${pct}%)`;
+
+          if (parseFloat(pct) >= 12) {
+            const labelSpan = document.createElement('span');
+            labelSpan.className = `text-[11px] font-bold px-1 truncate ${region.color === '#93C5FD' ? 'text-[#0F2942]' : 'text-white'}`;
+            labelSpan.textContent = `${pct}%`;
+            seg.appendChild(labelSpan);
+          }
+
+          const updateReadout = () => {
+            if (readoutEl) {
+              readoutEl.innerHTML = `<strong class="text-[#0F2942]">${region.label}:</strong> ${region.count.toLocaleString()} data centers (<strong class="${region.isSEA ? 'text-[#16A34A]' : 'text-[#1E3A8A]'}">${pct}%</strong> of global total)`;
+            }
+          };
+
+          seg.addEventListener('mouseenter', updateReadout);
+          seg.addEventListener('click', updateReadout);
+          ribbonContainer.appendChild(seg);
+
+          // Legend pill
+          const pill = document.createElement('button');
+          pill.type = 'button';
+          pill.className = 'inline-flex items-center space-x-1.5 text-slate-700 hover:text-[#0F2942] transition-colors cursor-pointer';
+          pill.innerHTML = `
+            <span class="w-2.5 h-2.5 rounded-xs shrink-0" style="background-color: ${region.color};"></span>
+            <span class="${region.isSEA ? 'font-bold text-[#16A34A]' : 'font-medium'}">${region.label}</span>
+            <span class="text-slate-400">(${pct}%)</span>
+          `;
+          pill.addEventListener('mouseenter', updateReadout);
+          pill.addEventListener('click', updateReadout);
+          legendContainer.appendChild(pill);
+        });
+      }
+
+      // State for Interactive Bar Chart
+      let activeView = 'regions';
+      let excludeUSA = true;
+      let chartInstance = null;
+
+      const titleEl = document.getElementById('chart-dynamic-title');
+      const subtitleEl = document.getElementById('chart-dynamic-subtitle');
+      const noteEl = document.getElementById('chart-analytical-note');
+      const excludeUsaWrapper = document.getElementById('exclude-usa-control');
+      const excludeUsaCheckbox = document.getElementById('exclude-usa-checkbox');
+      const canvasEl = document.getElementById('globalComparisonChart');
+      const fallbackEl = document.getElementById('chart-html-fallback');
+
+      function getActiveDataset() {
+        if (activeView === 'regions') {
+          if (excludeUsaWrapper) excludeUsaWrapper.classList.add('hidden');
+          if (titleEl) titleEl.textContent = 'Global Data Center Distribution by World Region (Total: 13,304)';
+          if (subtitleEl) subtitleEl.textContent = 'Southeast Asia highlighted in green (#16A34A) vs. global regions';
+          if (noteEl) {
+            noteEl.innerHTML = '<strong class="text-[#0F2942]">Key Takeaway:</strong> While North America (42.03%) and Europe (29.86%) account for 71.89% of global data centers, Southeast Asia’s 599 facilities (4.50% global share) represent 21.98% of all Asia-Pacific capacity (2,725 facilities combined) and outnumber Latin America &amp; the Caribbean (583) as well as the Middle East &amp; Africa (432).';
+          }
+          return {
+            labels: worldRegionsData.map(d => d.label),
+            values: worldRegionsData.map(d => d.count),
+            colors: worldRegionsData.map(d => d.color),
+            notes: worldRegionsData.map(d => d.note)
+          };
+        }
+
+        if (activeView === 'nations') {
+          if (excludeUsaWrapper) {
+            excludeUsaWrapper.classList.remove('hidden');
+            excludeUsaWrapper.classList.add('flex');
+          }
+          const filtered = excludeUSA
+            ? globalNationsBenchmark.filter(d => !d.isUS)
+            : globalNationsBenchmark;
+
+          if (titleEl) {
+            titleEl.textContent = excludeUSA
+              ? 'Southeast Asia Bloc & Top Markets vs. Global Peers (Excl. USA Outlier)'
+              : 'Southeast Asia Bloc & Top Markets vs. Top Global Nations (Incl. USA)';
+          }
+          if (subtitleEl) {
+            subtitleEl.textContent = 'Color-coded by world region (Southeast Asia in green #16A34A)';
+          }
+          if (noteEl) {
+            noteEl.innerHTML = '<strong class="text-[#0F2942]">Peer Benchmark Insight:</strong> Aggregated as a single regional market, Southeast Asia’s <strong>599 facilities</strong> virtually match the <strong>United Kingdom (603)</strong>, surpass <strong>Germany (583)</strong>, <strong>China (465)</strong>, and <strong>India (360)</strong>, while Indonesia (212) ranks 13th globally ahead of the Netherlands (200) and Russia (191).';
+          }
+          return {
+            labels: filtered.map(d => d.label),
+            values: filtered.map(d => d.count),
+            colors: filtered.map(d => regionColorMap[d.region] || '#94A3B8'),
+            notes: filtered.map(d => `${d.region} • ${((d.count / GLOBAL_TOTAL) * 100).toFixed(2)}% of global total`)
+          };
+        }
+
+        // View 3: All 10 ASEAN Member States (Uniform Green #16A34A)
+        if (excludeUsaWrapper) excludeUsaWrapper.classList.add('hidden');
+        if (titleEl) titleEl.textContent = 'Complete Breakdown of All 10 ASEAN Member States (Total: 599)';
+        if (subtitleEl) subtitleEl.textContent = 'Includes 8 mapped countries (588) plus Myanmar (7) and Brunei (4)';
+        if (noteEl) {
+          noteEl.innerHTML = '<strong class="text-[#0F2942]">Intra-ASEAN Concentration:</strong> The top four ASEAN markets—Indonesia (212), Malaysia (135), Thailand (71), and Singapore (65)—account for <strong>483 facilities (80.6%)</strong> of Southeast Asia’s total data center footprint, while Vietnam (48) and the Philippines (45) lead second-tier expansion.';
+        }
+        return {
+          labels: asean10Data.map(d => d.label),
+          values: asean10Data.map(d => d.count),
+          colors: asean10Data.map(() => '#16A34A'),
+          notes: asean10Data.map(d => `${d.role} • ${((d.count / 599) * 100).toFixed(1)}% of ASEAN total`)
+        };
+      }
+
+      // Pure HTML/SVG Fallback Renderer if Chart.js CDN is unavailable
+      function renderHtmlFallback(dataset) {
+        if (!fallbackEl) return;
+        const maxVal = Math.max(...dataset.values, 1);
+        fallbackEl.innerHTML = dataset.labels.map((label, idx) => {
+          const val = dataset.values[idx];
+          const color = dataset.colors[idx];
+          const pctWidth = Math.max((val / maxVal) * 100, 1.5);
+          const globalShare = ((val / GLOBAL_TOTAL) * 100).toFixed(2);
+          return `
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-semibold text-[#0F2942]">${label}</span>
+                <span class="font-bold text-slate-700">${val.toLocaleString()} <span class="font-normal text-slate-400">(${globalShare}%)</span></span>
+              </div>
+              <div class="w-full h-5 bg-slate-100 rounded-xs overflow-hidden">
+                <div class="h-full rounded-xs transition-all duration-300" style="width: ${pctWidth}%; background-color: ${color};"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Custom Chart.js Plugin to Draw Direct Value Labels at the End of Each Horizontal Bar
+      const directValueLabelsPlugin = {
+        id: 'directValueLabels',
+        afterDatasetsDraw(chart) {
+          const { ctx } = chart;
+          ctx.save();
+          ctx.font = '600 11px "Public Sans", system-ui, sans-serif';
+          ctx.textBaseline = 'middle';
+
+          const meta = chart.getDatasetMeta(0);
+          meta.data.forEach((bar, index) => {
+            const value = chart.data.datasets[0].data[index];
+            const sharePct = ((value / GLOBAL_TOTAL) * 100).toFixed(2);
+            const labelText = `${value.toLocaleString()} (${sharePct}%)`;
+            ctx.fillStyle = '#334155';
+            ctx.fillText(labelText, bar.x + 8, bar.y);
+          });
+          ctx.restore();
+        }
+      };
+
+      function renderComparisonChart() {
+        const dataset = getActiveDataset();
+
+        if (typeof Chart === 'undefined' || !canvasEl) {
+          if (canvasEl) canvasEl.classList.add('hidden');
+          if (fallbackEl) fallbackEl.classList.remove('hidden');
+          renderHtmlFallback(dataset);
+          return;
+        }
+
+        if (fallbackEl) fallbackEl.classList.add('hidden');
+        canvasEl.classList.remove('hidden');
+
+        // Adjust canvas height dynamically for denser nation lists
+        const dynamicHeight = Math.max(380, dataset.labels.length * 32 + 70);
+        canvasEl.style.height = `${dynamicHeight}px`;
+
+        if (chartInstance) {
+          chartInstance.destroy();
+        }
+
+        const maxDataVal = Math.max(...dataset.values);
+
+        chartInstance = new Chart(canvasEl.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: dataset.labels,
+            datasets: [
+              {
+                label: 'Data Centers',
+                data: dataset.values,
+                backgroundColor: dataset.colors,
+                borderRadius: 3,
+                barThickness: activeView === 'nations' ? 18 : 24
+              }
+            ]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+              padding: {
+                right: 115,
+                top: 4,
+                bottom: 4
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                backgroundColor: '#0F2942',
+                titleFont: { family: '"Public Sans", sans-serif', size: 12, weight: '700' },
+                bodyFont: { family: '"Public Sans", sans-serif', size: 12 },
+                padding: 10,
+                cornerRadius: 4,
+                callbacks: {
+                  label: function (ctx) {
+                    const val = ctx.raw;
+                    const pct = ((val / GLOBAL_TOTAL) * 100).toFixed(2);
+                    return ` ${val.toLocaleString()} facilities (${pct}% of global total)`;
+                  },
+                  afterLabel: function (ctx) {
+                    return ` ${dataset.notes[ctx.dataIndex]}`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                suggestedMax: maxDataVal * 1.16,
+                grid: {
+                  color: '#F1F5F9',
+                  drawBorder: false
+                },
+                ticks: {
+                  font: { family: '"Public Sans", sans-serif', size: 11 },
+                  color: '#64748B',
+                  callback: function (value) {
+                    return Number(value).toLocaleString();
+                  }
+                }
+              },
+              y: {
+                grid: {
+                  display: false,
+                  drawBorder: false
+                },
+                ticks: {
+                  font: { family: '"Public Sans", sans-serif', size: 12, weight: '600' },
+                  color: '#1E293B'
+                }
+              }
+            }
+          },
+          plugins: [directValueLabelsPlugin]
+        });
+      }
+
+      // Tab Button Listeners
+      const tabButtons = document.querySelectorAll('.chart-tab-btn');
+      tabButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          activeView = btn.getAttribute('data-chart-view');
+          tabButtons.forEach((b) => {
+            const isSelected = b === btn;
+            b.className = isSelected
+              ? 'chart-tab-btn px-3.5 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors cursor-pointer bg-[#1E3A8A] text-white'
+              : 'chart-tab-btn px-3.5 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200';
+          });
+          renderComparisonChart();
+        });
+      });
+
+      // Exclude USA Toggle Listener
+      if (excludeUsaCheckbox) {
+        excludeUsaCheckbox.addEventListener('change', (e) => {
+          excludeUSA = e.target.checked;
+          renderComparisonChart();
+        });
+      }
+
+      // Initial Chart Render
+      renderComparisonChart();
+    });
+  </script>
+</body>
+</html>
